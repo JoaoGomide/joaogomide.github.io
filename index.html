@@ -7,15 +7,17 @@
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #0e0c14;
-      --bg2: #13101e;
-      --ink: #e8e4f0;
-      --muted: #7b738f;
-      --accent: #a78bfa;
-      --accent-dim: #6d4fc7;
-      --accent-glow: rgba(167, 139, 250, 0.15);
-      --rule: #2a2438;
-      --card: #17141f;
+      --bg: #1b1626;          /* dark muted purple */
+      --bg2: #221c30;         /* slightly lighter purple */
+      --ink: #f8f8f2;         /* dracula foreground */
+      --muted: #6272a4;       /* dracula comment */
+      --accent: #9580b8;      /* muted, desaturated purple */
+      --accent-dim: #66589a;
+      --accent-glow: rgba(149, 128, 184, 0.12);
+      --title: #8be9fd;       /* dracula cyan for titles */
+      --label: #ff79c6;       /* dracula pink for labels */
+      --rule: #382f4a;
+      --card: #221c30;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,23 +32,11 @@
       min-height: 100vh;
     }
 
-    /* subtle starfield noise */
+    /* subtle noise */
     body::before {
       content: '';
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    }
-
-    /* top purple glow blob */
-    body::after {
-      content: '';
-      position: fixed;
-      top: -200px; left: 50%;
-      transform: translateX(-50%);
-      width: 800px; height: 500px;
-      background: radial-gradient(ellipse at center, rgba(109,79,199,0.18) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
     }
 
     /* ── NAV ── */
@@ -54,7 +44,7 @@
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.1rem 4rem;
-      background: rgba(14, 12, 20, 0.85);
+      background: rgba(27, 22, 38, 0.88);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--rule);
     }
@@ -81,15 +71,49 @@
     }
     .nav-links a:hover { color: var(--accent); }
 
+    /* ── HEADER BANNER ── */
+    .banner {
+      position: relative;
+      z-index: 2;
+      height: 42vh;
+      min-height: 280px;
+      max-height: 460px;
+      overflow: hidden;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 72%; /* show the autumn trees */
+      display: block;
+      /* shift the warm photo toward the site's cool palette */
+      filter: saturate(0.85) contrast(1.02) brightness(0.9);
+    }
+
+    /* purple wash + fade into the dark background */
+    .banner::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(27,22,38,0.55) 0%,
+          rgba(58,46,88,0.24) 35%,
+          rgba(34,28,48,0.45) 75%,
+          var(--bg) 100%),
+        radial-gradient(ellipse at 50% 110%, rgba(102,88,154,0.22) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
     /* ── HERO ── */
-    section { position: relative; z-index: 1; }
+    section { position: relative; z-index: 2; }
 
     .hero {
       display: grid;
       grid-template-columns: 1fr auto;
       max-width: 1100px;
       margin: 0 auto;
-      padding: 7rem 4rem 6rem;
+      padding: 4rem 4rem 5rem;
       gap: 5rem;
       align-items: center;
     }
@@ -99,29 +123,26 @@
       font-size: 0.68rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--label);
       margin-bottom: 1.4rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 5vw, 5rem);
-      font-weight: 400;
-      line-height: 1.05;
-      margin-bottom: 2rem;
-      letter-spacing: -0.02em;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
     }
 
     .hero-bio {
       font-size: 1.08rem;
-      color: #b0a8c4;
-      max-width: 520px;
+      color: #c5c8d8;
+      max-width: 560px;
       margin-bottom: 2.5rem;
       line-height: 1.85;
+    }
+
+    .hero-bio a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-dim);
+      transition: color 0.2s, text-shadow 0.2s;
+    }
+    .hero-bio a:hover {
+      color: #b3a3d6;
     }
 
     .hero-contacts { display: flex; flex-direction: column; gap: 0.45rem; }
@@ -137,9 +158,7 @@
     .hero-contacts a:hover { color: var(--accent); }
 
     /* ── PHOTO ── */
-    .hero-photo-wrap {
-      flex-shrink: 0;
-    }
+    .hero-photo-wrap { flex-shrink: 0; }
 
     .hero-photo {
       width: 220px;
@@ -152,7 +171,7 @@
       box-shadow:
         0 0 0 4px var(--bg),
         0 0 0 5px var(--accent-dim),
-        0 20px 60px rgba(109,79,199,0.25);
+        0 18px 50px rgba(0, 0, 0, 0.45);
     }
 
     /* ── CONTENT SECTIONS ── */
@@ -173,7 +192,7 @@
     .section-num {
       font-family: 'DM Mono', monospace;
       font-size: 0.62rem;
-      color: var(--accent);
+      color: var(--label);
       letter-spacing: 0.2em;
     }
 
@@ -181,7 +200,7 @@
       font-size: 2rem;
       font-weight: 400;
       letter-spacing: -0.01em;
-      color: var(--ink);
+      color: var(--title);
     }
 
     /* ── PAPERS ── */
@@ -225,8 +244,7 @@
       transition: color 0.2s, text-shadow 0.2s;
     }
     .paper-link:hover {
-      color: #c4b5fd;
-      text-shadow: 0 0 20px rgba(167,139,250,0.4);
+      color: #b3a3d6;
     }
 
     .paper-doi {
@@ -273,12 +291,11 @@
     }
     .production-link:hover {
       background: var(--accent-glow);
-      box-shadow: 0 0 12px rgba(167,139,250,0.2);
     }
 
     /* ── FOOTER ── */
     footer {
-      position: relative; z-index: 1;
+      position: relative; z-index: 2;
       border-top: 1px solid var(--rule);
       text-align: center;
       padding: 3rem 2rem;
@@ -294,19 +311,20 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .hero-label    { animation: fadeUp 0.6s ease both; animation-delay: 0.05s; }
-    .hero h1       { animation: fadeUp 0.6s ease both; animation-delay: 0.15s; }
-    .hero-bio      { animation: fadeUp 0.6s ease both; animation-delay: 0.28s; }
-    .hero-contacts { animation: fadeUp 0.6s ease both; animation-delay: 0.42s; }
+    .banner          { animation: fadeUp 0.8s ease both; }
+    .hero-label      { animation: fadeUp 0.6s ease both; animation-delay: 0.15s; }
+    .hero-bio        { animation: fadeUp 0.6s ease both; animation-delay: 0.28s; }
+    .hero-contacts   { animation: fadeUp 0.6s ease both; animation-delay: 0.42s; }
     .hero-photo-wrap { animation: fadeUp 0.8s ease both; animation-delay: 0.2s; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { gap: 1.5rem; }
+      .banner { height: 30vh; min-height: 200px; }
       .hero {
         grid-template-columns: 1fr;
-        padding: 4rem 1.5rem 3rem;
+        padding: 3rem 1.5rem 3rem;
         gap: 2.5rem;
       }
       .hero-photo-wrap { order: -1; }
@@ -326,7 +344,13 @@
     </ul>
   </nav>
 
-  <section id="home">
+  <!-- HEADER BANNER -->
+  <div class="banner" id="home">
+    <img src="./header.jpg" alt="Autumn trees against a pale sky" />
+  </div>
+
+  <!-- HERO -->
+  <section>
     <div class="hero">
       <div class="hero-text">
         <p class="hero-label">Theoretical Physics · IFT-UNESP / ICTP-SAIFR</p>
@@ -335,8 +359,9 @@
           My research focuses on the fundamental aspects of String (Field) Theory —
           particularly strings in curved backgrounds with RR flux, string compactifications,
           the AdS/CFT correspondence, conformal field theories, and integrability.
-          Recently, I also became quite interested in how computational techniques, 
-          such as StringCode and AI, can be used to advance research in these fields.
+          Recently, I also became quite interested in how computational techniques, such as
+          <a href="https://github.com/jscheinpflug/string-code" target="_blank" rel="noopener">StringCode</a>
+          and AI, can be used to advance research in these fields.
           This website is a place to make my work more easily available.
         </p>
         <div class="hero-contacts">
@@ -346,15 +371,12 @@
         </div>
       </div>
       <div class="hero-photo-wrap">
-        <img
-          class="hero-photo"
-          src="./photo.jpg"          
-          alt="João Gomide"
-        />
+        <img class="hero-photo" src="./photo.jpg" alt="João Gomide" />
       </div>
     </div>
   </section>
 
+  <!-- PAPERS -->
   <section id="papers">
     <div class="content-section">
       <div class="section-header">
@@ -391,6 +413,7 @@
     </div>
   </section>
 
+  <!-- GENERAL PRODUCTION -->
   <section id="production">
     <div class="content-section">
       <div class="section-header">
