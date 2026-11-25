@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>João Gomide</title>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --bg: #1b1626;          /* dark muted purple */
@@ -143,6 +143,14 @@
     }
     .hero-bio a:hover {
       color: #b3a3d6;
+    }
+
+    /* \StringCode: bold "string-" + bold monospace "code" in scpurple */
+    .stringcode { font-weight: 700; }
+    .stringcode .code {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      color: rgb(110, 90, 173);   /* \definecolor{scpurple}{RGB}{110, 90, 173} */
     }
 
     .hero-contacts { display: flex; flex-direction: column; gap: 0.45rem; }
@@ -360,7 +368,7 @@
           particularly strings in curved backgrounds with RR flux, string compactifications,
           the AdS/CFT correspondence, conformal field theories, integrability and the gravitational path integral.
           Recently, I also became quite interested in how computational techniques, such as
-          <a href="https://github.com/jscheinpflug/string-code" target="_blank" rel="noopener">StringCode</a>
+          <a href="https://github.com/jscheinpflug/string-code" target="_blank" rel="noopener"><span class="stringcode">string-<span class="code">code</span></span></a>
           and AI, can be used to advance research in these fields.
           This website is a place to make my work more easily available.
         </p>
